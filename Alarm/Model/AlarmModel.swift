@@ -8,7 +8,7 @@
 
 import Foundation
 struct Alarm {
-    var time:String
+    var time:Date
     var daysOfWeek: [Bool]
     var label:String
     var sound : String

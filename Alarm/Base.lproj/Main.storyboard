@@ -23,20 +23,21 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="114.50892857142857"/>
         </scene>
-        <!--View Controller-->
+        <!--Set Alarm View Controller-->
         <scene sceneID="54U-eA-dok">
             <objects>
-                <viewController id="pSE-tm-OVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="setAlarmViewController" id="pSE-tm-OVC" customClass="SetAlarmViewController" customModule="Alarm" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="acY-yB-k4v">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="z5u-MP-JvI"/>
                     </view>
+                    <navigationItem key="navigationItem" id="VfH-34-OcY"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NGo-Qn-0eG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1700.0000000000002" y="109.82142857142857"/>
+            <point key="canvasLocation" x="2610.144927536232" y="109.82142857142857"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="eMr-Bb-U9M">
@@ -51,7 +52,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mis-Qa-iEW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331.8840579710145" y="106.47321428571428"/>
+            <point key="canvasLocation" x="3240.579710144928" y="106.47321428571428"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="kpf-Yx-bSs">
@@ -66,7 +67,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YS3-jp-iTR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2331.8840579710145" y="733.92857142857144"/>
+            <point key="canvasLocation" x="3240.579710144928" y="733.92857142857144"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="VAz-7j-Ai9">
@@ -100,6 +101,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aox-Zo-iLJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="114.50892857142857"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="m0S-Ol-Xig">
+            <objects>
+                <navigationController storyboardIdentifier="page2" automaticallyAdjustsScrollViewInsets="NO" id="wRk-Uz-eKI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Xx-BL-w0J">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="pSE-tm-OVC" kind="relationship" relationship="rootViewController" id="tIJ-EM-cLN"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CmO-G1-sIz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1700.0000000000002" y="109.82142857142857"/>
         </scene>
     </scenes>
 </document>

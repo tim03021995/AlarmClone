@@ -1,26 +1,20 @@
 //
-//  ViewController.swift
+//  BaseViewController.swift
 //  Alarm
 //
-//  Created by Alvin Tseng on 2020/7/1.
+//  Created by Alvin Tseng on 2020/7/2.
 //  Copyright © 2020 Alvin Tseng. All rights reserved.
 //
 
 import UIKit
-import Firebase
-import SnapKit
 
-class ViewController: UIViewController{
-    
+class AlarmTableViewController: UIViewController {
     let fullScreen = UIScreen.main.bounds.size
     var alarmsArray:[Alarm] = []
     var alarmTableView = UITableView()
-
-    
     override func viewDidLoad() {
+        
         setTableView()
-        setupNavigetionBar()
-        setupNavigetionBarItem()
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
@@ -43,46 +37,6 @@ class ViewController: UIViewController{
         alarm12 = Alarm(time: testTime, daysOfWeek: onlySunday, label: "鬧鐘4", sound: "雞啼", status: true)
         alarm13 = Alarm(time: testTime, daysOfWeek: onlySunday, label: "鬧鐘4", sound: "雞啼", status: true)
         alarmsArray = [alarm1,alarm2,alarm3,alarm4,alarm5,alarm6,alarm7,alarm8,alarm9,alarm10,alarm11,alarm12,alarm13]
-    }
-    func setupNavigetionBar (){
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.barStyle = .black
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    func setupNavigetionBarItem() {
-        //title
-        let title = UILabel()
-        title.text = "鬧豬"
-        title.textColor = .white
-        
-        //addButton
-        var addImage = UIImage(systemName: "plus")
-        addImage = addImage!.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
-        let addButton = UIBarButtonItem(
-            image: addImage,
-            style: .plain,
-            target: self,
-            action: #selector(ViewController.add))
-        
-        //editButton
-        let editButton = UIBarButtonItem(
-            title: "編輯",
-            style: .done,
-            target: self,
-            action: #selector(ViewController.edit))
-        editButton.tintColor = .systemOrange
-        
-        navigationItem.titleView = title
-        navigationItem.leftBarButtonItem = editButton
-        navigationItem.rightBarButtonItem = addButton
-    }
-    @objc func add(){
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "page2") as? UINavigationController{
-            present(vc, animated: true)
-            // show(vc, sender: nil)
-        }
-    }
-    @objc func edit (){
         
     }
     func setTableView() {
@@ -106,7 +60,7 @@ class ViewController: UIViewController{
         }
     }
 }
-extension ViewController : UITableViewDelegate , UITableViewDataSource{
+extension  AlarmTableViewController : UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let cellCount  = alarmsArray.count
         return cellCount
