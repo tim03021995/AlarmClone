@@ -11,7 +11,7 @@ import Firebase
 import SnapKit
 
 class ViewController: UIViewController{
-
+    
     let fullScreen = UIScreen.main.bounds.size
     var alarmsArray:[Alarm] = []
     var alarmTableView = UITableView()
@@ -25,7 +25,9 @@ class ViewController: UIViewController{
         alarmTableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 20)
         alarmTableView.backgroundColor = .black
         alarmTableView.allowsMultipleSelection = false
-        alarmTableView.allowsSelection = true
+        alarmTableView.allowsSelection = false
+        alarmTableView.showsVerticalScrollIndicator = true
+        alarmTableView.indicatorStyle = .white
         self.view.addSubview(alarmTableView)
         alarmTableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(0)
@@ -83,7 +85,7 @@ class ViewController: UIViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: editButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
     }
-
+    
 }
 extension ViewController : UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,15 +100,23 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource{
         cell.alarmSwitch.isOn = alarmsArray[indexPath.row].status
         return cell
     }
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont(name: "鬧豬", size: 60)
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 30))
+        let headerLabel = UILabel(frame: CGRect(x: 15, y: -20,width: headerView.frame.width-10, height: headerView.frame.height-10))
+        headerLabel.text = "鬧豬"
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 35)
+        headerLabel.textColor = .white
+        headerLabel.textAlignment = .left
+        headerView.backgroundColor = .black
+        headerView.addSubview(headerLabel)
+        return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         10
     }
     func  scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.contentOffset.y<0){
+        if (scrollView.contentOffset.y < -50){
             UIView.animate(withDuration: 0.2) {
                 self.navigationItem.titleView?.alpha = 0
             }

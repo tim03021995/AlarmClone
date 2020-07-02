@@ -11,13 +11,7 @@ import UIKit
 class SetAlarmViewController: UIViewController {
 
     override func viewDidLoad() {
-        let fullScreenSize = UIScreen.main.bounds.size
-        var info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
-        let myTableView = UITableView(frame: CGRect(
-        x: 0, y: 20,
-        width: fullScreenSize.width,
-        height: fullScreenSize.height - 20),
-                                      style: .grouped)
+  
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
