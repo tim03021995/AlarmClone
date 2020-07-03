@@ -13,11 +13,8 @@ import SnapKit
 class ViewController: UIViewController{
     
     let fullScreen = UIScreen.main.bounds.size
-    var alarmsArray:[Alarm] = []
     var alarmTableView = UITableView()
     let alarmTableViewController = AlarmTableViewViewController()
-    
-    
     
     override func viewDidLoad() {
         self.addChild(alarmTableViewController)
@@ -25,10 +22,6 @@ class ViewController: UIViewController{
         setupNavigetionBar()
         setupNavigetionBarItem()
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        
-        
     }
     func setupNavigetionBar (){
         self.navigationController?.navigationBar.isTranslucent = true
