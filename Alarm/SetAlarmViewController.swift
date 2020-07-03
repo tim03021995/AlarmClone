@@ -65,39 +65,40 @@ class SetAlarmViewController: UIViewController {
     }
     func setupSelectTime() {
         selectTime.setValue(UIColor.white, forKeyPath: "textColor")
-        selectTime.backgroundColor = #colorLiteral(red: 0.1097619608, green: 0.1096628532, blue: 0.1179399118, alpha: 1)
+        selectTime.backgroundColor = .backgroundColor
         selectTime.tintColor = .white
         selectTime.datePickerMode = .time
         selectTime.date = NSDate() as Date
         selectTime.locale = NSLocale(localeIdentifier: "zh_TW") as Locale
         selectTime.addTarget(self, action: #selector(SetAlarmViewController.dateDidSelect), for: .valueChanged)
+        //selectTime.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(selectTime)
         selectTime.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(0)
+            make.top.equalToSuperview().offset(40)
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
-            make.height.equalTo(300)
+            make.height.equalTo(250)
         }
     }
     func setupTableView(){
-        self.menuTableView = UITableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .grouped)
+        self.menuTableView = UITableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .plain)
         menuTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         menuTableView.delegate = setAlarmTableViewViewController
         menuTableView.dataSource = setAlarmTableViewViewController
         menuTableView.separatorStyle = .singleLine
         menuTableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 20)
-        menuTableView.backgroundColor = #colorLiteral(red: 0.1097619608, green: 0.1096628532, blue: 0.1179399118, alpha: 1)
+        menuTableView.backgroundColor = .backgroundColor
         menuTableView.allowsMultipleSelection = false
-        menuTableView.allowsSelection = false
+        menuTableView.allowsSelection = true
         menuTableView.showsVerticalScrollIndicator = false
         menuTableView.isScrollEnabled = false
         menuTableView.indicatorStyle = .white
         self.view.addSubview(menuTableView)
         menuTableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(250)
-            make.bottom.equalToSuperview().offset(0)
+            make.top.equalTo(selectTime.snp_bottom).offset(0)
+            make.height.equalToSuperview().offset(0)
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
         }
