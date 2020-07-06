@@ -7,27 +7,9 @@
 //
 
 import UIKit
-
-class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
-    //資料模擬
-    var alarmsArray = [
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘1", sound: "雞啼", status: false),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘2", sound: "雞啼", status: false),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘3", sound: "雞啼", status: false),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "起床尿尿", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "起床大便", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "摸豆芽", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "氣功坡", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "好想上廁所", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "學貓叫", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘4", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘4", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘4", sound: "雞啼", status: true),
-    Alarm(time: NSDate() as Date, daysOfWeek: [true,false,false,false,false,false,false], label: "鬧鐘4", sound: "雞啼", status: true)
-    ]
-    
+class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let cellCount  = alarmsArray.count
+        let cellCount  = alarmArray.count
         return cellCount
     }
     
@@ -48,10 +30,10 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
                 formatter.string(from: time)
             return str
         }
-        cell.alarmLabel.text = alarmsArray[indexPath.row].label
-        cell.isAM.text = timeToAM(alarmsArray[indexPath.row].time)
-        cell.alarmTime.text = timeToString(alarmsArray[indexPath.row].time)
-        cell.alarmSwitch.isOn = alarmsArray[indexPath.row].status
+        cell.alarmLabel.text = alarmArray[indexPath.row].label + "，" + GetDaysOfWeekString(array: alarmArray[indexPath.row].daysOfWeek)
+        cell.isAM.text = timeToAM(alarmArray[indexPath.row].time)
+        cell.alarmTime.text = timeToString(alarmArray[indexPath.row].time)
+        cell.alarmSwitch.isOn = alarmArray[indexPath.row].status
         return cell
     }
     
@@ -80,6 +62,71 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
             }
         }
     }
-    
+    func GetDaysOfWeekString(array:[Bool]) -> String {
+        var array = array
+        var trueNum = 0
+        var str:String = ""
+        let info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
+        let info2 = ["週一","週二","週三","週四","週五","週六","週日"]
+        for num in array{
+            if num{
+                trueNum += 1
+            }
+        }
+        if (trueNum == 7){
+            str =  "每天"
+        }
+        else if(trueNum == 0){
+            str =  "永不"
+            
+        }else if(trueNum == 1){
+            var i = 0
+            for trueGuy in array {
+                if (trueGuy == true)
+                {
+                    str = info[i]
+                }
+                else{
+                    i+=1
+                }
+            }
+        }else if(trueNum == 2){
+            if(array[0] == true && array[6] == true ){
+                str = "週末"
+            }
+            else{
+                let buffer = array[0]
+                array.remove(at: 0)
+                array.append(buffer)
+                var i = 0
+                for trueGuy in array {
+                    if (trueGuy == true)
+                    {
+                        str = str+" "+info2[i]
+                        i += 1
+                    }
+                    else{
+                        i+=1
+                    }
+                }
+            }
+        }else{
+            let buffer = array[0]
+            array.remove(at: 0)
+            array.append(buffer)
+            var i = 0
+            for trueGuy in array {
+                if (trueGuy == true)
+                {
+                    str = str+" "+info2[i]
+                    i += 1
+                }
+                else{
+                    i+=1
+                }
+            }
+        }
+        return str
+    }
     
 }

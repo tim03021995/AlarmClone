@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct Alarm {
+struct Alarm:Codable{
     var time:Date
     var daysOfWeek: [Bool]
     var label:String

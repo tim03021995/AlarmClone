@@ -39,10 +39,10 @@
             </objects>
             <point key="canvasLocation" x="2610.144927536232" y="109.82142857142857"/>
         </scene>
-        <!--View Controller-->
+        <!--Sounds View Controller-->
         <scene sceneID="eMr-Bb-U9M">
             <objects>
-                <viewController id="SWs-tt-MNA" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="soundsViewController" id="SWs-tt-MNA" customClass="SoundsViewController" customModule="Alarm" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nGg-Ic-Mkw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -54,10 +54,10 @@
             </objects>
             <point key="canvasLocation" x="3240.579710144928" y="106.47321428571428"/>
         </scene>
-        <!--View Controller-->
+        <!--Days Of Week View Controller-->
         <scene sceneID="kpf-Yx-bSs">
             <objects>
-                <viewController id="DJa-ZZ-HWz" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="daysOfWeekViewController" id="DJa-ZZ-HWz" customClass="DaysOfWeekViewController" customModule="Alarm" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="p3m-fv-1Da">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,10 +69,10 @@
             </objects>
             <point key="canvasLocation" x="3240.579710144928" y="733.92857142857144"/>
         </scene>
-        <!--View Controller-->
+        <!--Label View Controller-->
         <scene sceneID="VAz-7j-Ai9">
             <objects>
-                <viewController id="444-lf-7Mh" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="labelViewController" id="444-lf-7Mh" customClass="LabelViewController" customModule="Alarm" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TNt-jo-Nt5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -82,7 +82,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cXD-re-TrL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2310" y="1377"/>
+            <point key="canvasLocation" x="3199" y="1384"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tHi-jf-ztC">
@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="114.50892857142857"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Set AlarmNC View Controller-->
         <scene sceneID="m0S-Ol-Xig">
             <objects>
-                <navigationController storyboardIdentifier="page2" automaticallyAdjustsScrollViewInsets="NO" id="wRk-Uz-eKI" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="page2" automaticallyAdjustsScrollViewInsets="NO" id="wRk-Uz-eKI" customClass="SetAlarmNCViewController" customModule="Alarm" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9Xx-BL-w0J">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

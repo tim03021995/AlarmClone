@@ -9,18 +9,21 @@
 import UIKit
 import Firebase
 import SnapKit
-
+var alarmArray = [Alarm]()
 class ViewController: UIViewController{
     
     let fullScreen = UIScreen.main.bounds.size
     var alarmTableView = UITableView()
     let alarmTableViewController = AlarmTableViewViewController()
+    var dayType:[Bool] = []
     
     override func viewDidLoad() {
+        alarmArray = loadAlarm()
         self.addChild(alarmTableViewController)
         setTableView()
         setupNavigetionBar()
         setupNavigetionBarItem()
+        
         super.viewDidLoad()
     }
     func setupNavigetionBar (){
@@ -56,8 +59,12 @@ class ViewController: UIViewController{
         navigationItem.rightBarButtonItem = addButton
     }
     @objc func add(){
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "page2") as? UINavigationController{
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "page2") as? SetAlarmNCViewController{
+            vc.reloadTableViewData = {
+                self.alarmTableView.reloadData()
+            }
             present(vc, animated: true)
+            
             // show(vc, sender: nil)
         }
     }
@@ -84,4 +91,16 @@ class ViewController: UIViewController{
             make.right.equalToSuperview().offset(0)
         }
     }
+}
+extension ViewController{
+    func loadAlarm () -> [Alarm]{
+        if let data = UserDefaults.standard.value(forKey:"alarmArray") as? Data {
+            let alarmArray = try? PropertyListDecoder().decode([Alarm].self, from: data)
+            return alarmArray!
+        }
+        else{
+            return [Alarm].init()
+        }
+    }
+
 }
