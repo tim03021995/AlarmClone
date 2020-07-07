@@ -17,8 +17,13 @@ var alarmArray = [Alarm](){
 }
 class ViewController: UIViewController{
     let fullScreen = UIScreen.main.bounds.size
-    var alarmTableView = UITableView()
-    let alarmTableViewController = AlarmTableViewViewController()
+    var alarmTableView:CustomTableView! {
+        didSet{
+            alarmTableView.delegate = alarmTableViewController
+            alarmTableView.dataSource = alarmTableViewController
+        }
+    }
+    var alarmTableViewController = AlarmTableViewViewController()
     var dayType:[Bool] = []
     override func viewDidLoad() {
         view.backgroundColor = .black
@@ -33,7 +38,9 @@ class ViewController: UIViewController{
                     self.navigationItem.titleView?.alpha = 0
                 }
             }
-            
+        }
+        alarmTableViewController.reloadTableViewData = {
+            self.alarmTableView.reloadData()
         }
         self.addChild(alarmTableViewController)
         setTableView()
@@ -75,17 +82,9 @@ class ViewController: UIViewController{
         navigationItem.rightBarButtonItem = addButton
     }
     func setTableView() {
-        self.alarmTableView = UITableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .grouped)
+        self.alarmTableView = CustomTableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .grouped)
         alarmTableView.register(UINib(nibName: "AlarmCell", bundle: nil), forCellReuseIdentifier: "alarmCell")
-        alarmTableView.delegate = alarmTableViewController
-        alarmTableView.dataSource = alarmTableViewController
-        alarmTableView.separatorStyle = .singleLine
-        alarmTableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 20)
-        alarmTableView.backgroundColor = .black
-        alarmTableView.allowsMultipleSelection = false
-        alarmTableView.allowsSelection = false
-        alarmTableView.showsVerticalScrollIndicator = true
-        alarmTableView.indicatorStyle = .white
+        alarmTableView.homePageTableView()
         self.view.addSubview(alarmTableView)
         alarmTableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(0)
@@ -101,13 +100,14 @@ class ViewController: UIViewController{
         UNUserNotificationCenter.current().setNotificationCategories([debitOverdraftNotifCategory])
     }
     @objc func add(){
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "page2") as? SetAlarmNCViewController{
-            vc.reloadTableViewData = {
-                self.alarmTableView.reloadData()
-            }
-            present(vc, animated: true)
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "setAlarmViewController") as? SetAlarmViewController
+        let nc = SetAlarmNCViewController(rootViewController: vc!)
+        vc?.createMode = true
+        nc.reloadTableViewData = {
+            self.alarmTableView.reloadData()
         }
-    }
+        present(nc, animated: true)
+        }
     @objc func edit (){
         alarmTableView.setEditing(!alarmTableView.isEditing, animated: true)
         if (!alarmTableView.isEditing) {
@@ -119,7 +119,7 @@ class ViewController: UIViewController{
                 action: #selector(ViewController.edit))
             editButton.tintColor = .systemOrange
             self.navigationItem.leftBarButtonItem = editButton
-            alarmTableViewController.alarmTableViewIsEditing = false
+            alarmTableViewController.alarmTableViewIsEditing = true
         } else {
             // 顯示編輯完成按鈕
             let doneButton = UIBarButtonItem(
@@ -129,7 +129,7 @@ class ViewController: UIViewController{
                 action: #selector(ViewController.edit))
             doneButton.tintColor = .systemOrange
             self.navigationItem.leftBarButtonItem = doneButton
-            alarmTableViewController.alarmTableViewIsEditing = true
+            alarmTableViewController.alarmTableViewIsEditing = false
         }
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
     var alarmTableViewIsEditing:Bool = false
     var showNavigationItem :((Bool)->())!
+    var reloadTableViewData :(()->())!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let cellCount  = alarmArray.count
         return cellCount
@@ -19,14 +20,12 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let name = alarmArray[indexPath.row]
-        
         if editingStyle == .delete {
             alarmArray.remove(at: indexPath.row)
             tableView.beginUpdates()
             tableView.deleteRows(
                 at: [indexPath], with: .fade)
             tableView.endUpdates()
-            
             print("刪除的是 \(name)")
         }
     }
@@ -47,6 +46,20 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
                 formatter.string(from: time)
             return str
         }
+        //編輯模式的右鍵
+        let view1 = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
+        let button_1 = UIButton(type: .custom)
+        button_1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button_1.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        button_1.tintColor = .gray
+        button_1.contentMode = .scaleAspectFit
+        view1.addSubview(button_1)
+        button_1.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(0)
+            make.centerY.equalToSuperview()
+        }
+        cell.editingAccessoryView = view1 as UIView
+        
         cell.alarmLabel.text = alarmArray[indexPath.row].label + "，" + GetDaysOfWeekString(array: alarmArray[indexPath.row].daysOfWeek)
         cell.isAM.text = timeToAM(alarmArray[indexPath.row].time)
         cell.alarmTime.text = timeToString(alarmArray[indexPath.row].time)
@@ -143,5 +156,85 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
             }
         }
         return str
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "setAlarmViewController") as? SetAlarmViewController
+        let nc = SetAlarmNCViewController(rootViewController: vc!)
+        vc?.daysOfWeek = alarmArray[indexPath.row].daysOfWeek
+        vc?.daysOfWeekLabel = GetDaysOfWeekString(array: alarmArray[indexPath.row].daysOfWeek)
+        vc?.sound = alarmArray[indexPath.row].sound
+        vc?.status = alarmArray[indexPath.row].status
+        vc?.label = alarmArray[indexPath.row].label
+        vc?.createMode = false
+        nc.reloadTableViewData = {
+            self.reloadTableViewData()
+        }
+        show(nc, sender: nil)
+        func GetDaysOfWeekString(array:[Bool]) -> String {
+            var array = array
+            var trueNum = 0
+            var str:String = ""
+            let info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
+            let info2 = ["週一","週二","週三","週四","週五","週六","週日"]
+            for num in array{
+                if num{
+                    trueNum += 1
+                }
+            }//計數有幾個true
+            switch trueNum{
+            case 7:
+                str =  "每天"
+            case 0:
+                str = "永不"
+            case 1:
+                var i = 0
+                for trueGuy in array {
+                    if (trueGuy == true)
+                    {
+                        str = info[i]
+                        break
+                    }
+                    else{
+                        i+=1
+                    }
+                }
+            case 2:
+                if(array[0] == true && array[6] == true ){
+                    str = "週末"
+                }
+                else{
+                    let buffer = array[0]
+                    array.remove(at: 0)
+                    array.append(buffer)
+                    var i = 0
+                    for trueGuy in array {
+                        if (trueGuy == true)
+                        {
+                            str = str+" "+info2[i]
+                            i += 1
+                        }
+                        else{
+                            i+=1
+                        }
+                    }
+                }
+            default:
+                let buffer = array[0]
+                array.remove(at: 0)
+                array.append(buffer)
+                var i = 0
+                for trueGuy in array {
+                    if (trueGuy == true)
+                    {
+                        str = str+" "+info2[i]
+                        i += 1
+                    }
+                    else{
+                        i+=1
+                    }
+                }
+            }
+            return str
+        }
     }
 }
