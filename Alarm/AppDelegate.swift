@@ -7,12 +7,21 @@
 //
 
 import UIKit
-
+import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // SDK required for notifications
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                //通知請求
+                print("Notifications permission granted.")
+            }
+            else {
+                print("Notifications permission denied because: \(String(describing: error?.localizedDescription)).")
+            }
+        }
         return true
     }
 

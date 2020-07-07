@@ -13,18 +13,16 @@ class AlarmCell: UITableViewCell {
     @IBOutlet weak var isAM: UILabel!
     @IBOutlet weak var alarmTime: UILabel!
     @IBOutlet weak var alarmLabel: UILabel!
-    @IBOutlet weak var alarmSwitch: UISwitch!
     @IBAction func alarmISOpen(_ sender: Any) {
     }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+       // alarmSwitch.onImage = UIImage(systemName: "chevron.right")
     }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
-    
 }

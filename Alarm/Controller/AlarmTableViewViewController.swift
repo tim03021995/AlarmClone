@@ -7,12 +7,29 @@
 //
 
 import UIKit
-class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{    
+class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
+    var alarmTableViewIsEditing:Bool = false
+    var showNavigationItem :((Bool)->())!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let cellCount  = alarmArray.count
         return cellCount
     }
-    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let name = alarmArray[indexPath.row]
+        
+        if editingStyle == .delete {
+            alarmArray.remove(at: indexPath.row)
+            tableView.beginUpdates()
+            tableView.deleteRows(
+                at: [indexPath], with: .fade)
+            tableView.endUpdates()
+            
+            print("刪除的是 \(name)")
+        }
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "alarmCell", for: indexPath) as! AlarmCell
         let timeToString = { (time:Date) -> String in
@@ -33,10 +50,12 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
         cell.alarmLabel.text = alarmArray[indexPath.row].label + "，" + GetDaysOfWeekString(array: alarmArray[indexPath.row].daysOfWeek)
         cell.isAM.text = timeToAM(alarmArray[indexPath.row].time)
         cell.alarmTime.text = timeToString(alarmArray[indexPath.row].time)
-        cell.alarmSwitch.isOn = alarmArray[indexPath.row].status
+        let alarmSwitch = UISwitch()
+        alarmSwitch.isOn = alarmArray[indexPath.row].status
+        cell.accessoryView = alarmSwitch
+        cell.editingAccessoryType = .disclosureIndicator
         return cell
     }
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 30))
         let headerLabel = UILabel(frame: CGRect(x: 15, y: -20,width: headerView.frame.width-10, height: headerView.frame.height-10))
@@ -52,14 +71,11 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
         10
     }
     func  scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         if (scrollView.contentOffset.y < -50){
-            UIView.animate(withDuration: 0.2) {
-                self.navigationItem.titleView?.alpha = 0
-            }
+            showNavigationItem(false)
         }else{
-            UIView.animate(withDuration: 0.2) {
-                self.navigationItem.titleView?.alpha = 1
-            }
+            showNavigationItem(true)
         }
     }
     func GetDaysOfWeekString(array:[Bool]) -> String {
@@ -72,25 +88,25 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
             if num{
                 trueNum += 1
             }
-        }
-        if (trueNum == 7){
+        }//計數有幾個true
+        switch trueNum{
+        case 7:
             str =  "每天"
-        }
-        else if(trueNum == 0){
-            str =  "永不"
-            
-        }else if(trueNum == 1){
+        case 0:
+            str = "永不"
+        case 1:
             var i = 0
             for trueGuy in array {
                 if (trueGuy == true)
                 {
                     str = info[i]
+                    break
                 }
                 else{
                     i+=1
                 }
             }
-        }else if(trueNum == 2){
+        case 2:
             if(array[0] == true && array[6] == true ){
                 str = "週末"
             }
@@ -110,7 +126,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
                     }
                 }
             }
-        }else{
+        default:
             let buffer = array[0]
             array.remove(at: 0)
             array.append(buffer)
@@ -128,5 +144,4 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
         }
         return str
     }
-    
 }

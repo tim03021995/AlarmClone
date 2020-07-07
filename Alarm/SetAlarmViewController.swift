@@ -253,73 +253,72 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
     @objc func isOpen(sender : UIButton){
         self.status = button.isOn
     }
-    
-    func GetDaysOfWeekString(array:[Bool]) -> String {
-        var array = array
-        var trueNum = 0
-        var str:String = ""
-        let info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
-        let info2 = ["週一","週二","週三","週四","週五","週六","週日"]
-        for num in array{
-            if num{
-                trueNum += 1
-            }
-        }
-        if (trueNum == 7){
-            str =  "每天"
-        }
-        else if(trueNum == 0){
-            str =  "永不"
-            
-        }else if(trueNum == 1){
-            var i = 0
-            for trueGuy in array {
-                if (trueGuy == true)
-                {
-                    str = info[i]
-                }
-                else{
-                    i+=1
-                }
-            }
-        }else if(trueNum == 2){
-            if(array[0] == true && array[6] == true ){
-                str = "週末"
-            }
-            else{
-                let buffer = array[0]
-                array.remove(at: 0)
-                array.append(buffer)
-                var i = 0
-                for trueGuy in array {
-                    if (trueGuy == true)
-                    {
-                        str = str+" "+info2[i]
-                        i += 1
-                    }
-                    else{
-                        i+=1
-                    }
-                }
-            }
-        }else{
-            let buffer = array[0]
-            array.remove(at: 0)
-            array.append(buffer)
-            var i = 0
-            for trueGuy in array {
-                if (trueGuy == true)
-                {
-                    str = str+" "+info2[i]
-                    i += 1
-                }
-                else{
-                    i+=1
-                }
-            }
-        }
-        return str
-    }
+   func GetDaysOfWeekString(array:[Bool]) -> String {
+       var array = array
+       var trueNum = 0
+       var str:String = ""
+       let info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
+       let info2 = ["週一","週二","週三","週四","週五","週六","週日"]
+       for num in array{
+           if num{
+               trueNum += 1
+           }
+       }//計數有幾個true
+       switch trueNum{
+       case 7:
+           str =  "每天"
+       case 0:
+           str = "永不"
+       case 1:
+           var i = 0
+           for trueGuy in array {
+               if (trueGuy == true)
+               {
+                   str = info[i]
+                   break
+               }
+               else{
+                   i+=1
+               }
+           }
+       case 2:
+           if(array[0] == true && array[6] == true ){
+               str = "週末"
+           }
+           else{
+               let buffer = array[0]
+               array.remove(at: 0)
+               array.append(buffer)
+               var i = 0
+               for trueGuy in array {
+                   if (trueGuy == true)
+                   {
+                       str = str+" "+info2[i]
+                       i += 1
+                   }
+                   else{
+                       i+=1
+                   }
+               }
+           }
+       default:
+           let buffer = array[0]
+           array.remove(at: 0)
+           array.append(buffer)
+           var i = 0
+           for trueGuy in array {
+               if (trueGuy == true)
+               {
+                   str = str+" "+info2[i]
+                   i += 1
+               }
+               else{
+                   i+=1
+               }
+           }
+       }
+       return str
+   }
 }
 extension SetAlarmViewController{
     func saveAlarm (_ alarmArray:[Alarm]){
