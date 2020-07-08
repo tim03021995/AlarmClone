@@ -13,14 +13,12 @@ struct Alarm:Codable{
     var label:String
     var sound : String
     var status : Bool
+    #warning("build  daysOfWeek -> String funtion")
 }
-//struct DaysOfWeek {
-//    var  sunday : Bool
-//    var monday : Bool
-//    var tuesday : Bool
-//    var wednesday : Bool
-//    var thursday : Bool
-//    var friday : Bool
-//    var saturday : Bool
-//}
+/*
+ enum Days{
+ case 星期日,星期一,星期二,星期三,星期四,星期五,星期六
+ }
+ */
+ 
 //模擬資料

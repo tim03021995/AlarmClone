@@ -7,6 +7,7 @@
 //
 
 import UIKit
+#warning("con")
 class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
     var alarmTableViewIsEditing:Bool = false
     var showNavigationItem :((Bool)->())!
@@ -14,6 +15,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let cellCount  = alarmArray.count
         return cellCount
+        //UITableViewController
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         true
@@ -91,6 +93,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
             showNavigationItem(true)
         }
     }
+    #warning("Fix")
     func GetDaysOfWeekString(array:[Bool]) -> String {
         var array = array
         var trueNum = 0
@@ -165,12 +168,14 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
         vc?.sound = alarmArray[indexPath.row].sound
         vc?.status = alarmArray[indexPath.row].status
         vc?.label = alarmArray[indexPath.row].label
-        vc?.createMode = false
+        vc?.cellIndex = indexPath.row
+        vc?.time = alarmArray[indexPath.row].time
         nc.reloadTableViewData = {
             self.reloadTableViewData()
         }
         show(nc, sender: nil)
         func GetDaysOfWeekString(array:[Bool]) -> String {
+            //a.joined("#")
             var array = array
             var trueNum = 0
             var str:String = ""
@@ -183,9 +188,9 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
             }//計數有幾個true
             switch trueNum{
             case 7:
-                str =  "每天"
+                str =  "，每天"
             case 0:
-                str = "永不"
+                str = ""
             case 1:
                 var i = 0
                 for trueGuy in array {
@@ -200,9 +205,10 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
                 }
             case 2:
                 if(array[0] == true && array[6] == true ){
-                    str = "週末"
+                    str = "，週末"
                 }
                 else{
+                    str = "，"
                     let buffer = array[0]
                     array.remove(at: 0)
                     array.append(buffer)
@@ -219,6 +225,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
                     }
                 }
             default:
+                str = "，"
                 let buffer = array[0]
                 array.remove(at: 0)
                 array.append(buffer)

@@ -9,18 +9,21 @@
 import UIKit
 
 class DaysOfWeekViewController: BaseViewController{
+    #warning("info放一個地方")
     let info = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"]
     var getDaysOfWeek : (([Bool])->())!
-    var daysofWeek : [Bool]?
+    var daysOfWeek : [Bool]?
+    #warning("默認值")
     var tableView = UITableView()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
     }
     override func viewWillDisappear(_ animated: Bool) {
-        getDaysOfWeek(daysofWeek!)
+        getDaysOfWeek(daysOfWeek!)
     }
     func setupTableView(){
+        #warning("tableview要改")
         self.tableView = UITableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.delegate = self
@@ -44,12 +47,13 @@ class DaysOfWeekViewController: BaseViewController{
 }
 extension DaysOfWeekViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        7
+        info.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        if((daysofWeek![indexPath.row])){
+        #warning("命名")
+        if((daysOfWeek![indexPath.row])){
             cell.accessoryType = .checkmark
         }else{
             cell.accessoryType = .none
@@ -63,13 +67,14 @@ extension DaysOfWeekViewController:UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("\(info[indexPath.row])")
-        if (daysofWeek![indexPath.row]){
-            daysofWeek![indexPath.row] = false
-            self.tableView.reloadData()
-        }else{
-            daysofWeek![indexPath.row] = true
-            self.tableView.reloadData()
-        }
+//        if (daysofWeek![indexPath.row]){
+//            daysofWeek![indexPath.row] = false
+//        }else{
+//            daysofWeek![indexPath.row] = true
+//        }
+        #warning("調查 mutating func")
+        daysOfWeek![indexPath.row].toggle()
+        self.tableView.reloadData()
     }
 }
 

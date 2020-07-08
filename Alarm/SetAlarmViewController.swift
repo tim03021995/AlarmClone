@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class SetAlarmViewController: UIViewController {
-    var createMode : Bool?
+    var cellIndex : Int?
     var daysOfWeekLabel: String?
     var daysOfWeek: [Bool]?
     var label:String?
@@ -22,8 +22,8 @@ class SetAlarmViewController: UIViewController {
     var selectTime = UIDatePicker()
     var menuTableView = UITableView()
     
-    let button = UISwitch(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-    var info = ["重複","標籤","提示聲","稍後提醒"]
+    let `switch` = UISwitch(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+    let  info = ["重複","標籤","提示聲","稍後提醒"]
     //
     override func viewDidLoad() {
         self.view.backgroundColor = .backgroundColor
@@ -62,7 +62,7 @@ class SetAlarmViewController: UIViewController {
             target: self,
             action: #selector(SetAlarmViewController.cancel))
         cancelButton.tintColor = .systemOrange
-        
+
         //backButton
         let backButton = UIBarButtonItem(
             title: "返回",
@@ -80,7 +80,8 @@ class SetAlarmViewController: UIViewController {
         selectTime.backgroundColor = .backgroundColor
         selectTime.tintColor = .white
         selectTime.datePickerMode = .time
-        selectTime.date = NSDate() as Date
+        #warning("現在時間")
+        selectTime.date = time ?? Date()
         selectTime.locale = NSLocale(localeIdentifier: "zh_TW") as Locale
         selectTime.addTarget(self, action: #selector(SetAlarmViewController.dateDidSelect), for: .valueChanged)
         //selectTime.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +119,7 @@ class SetAlarmViewController: UIViewController {
         }
     }
     @objc func save (){
-        if createMode!{
+        if cellIndex == nil{
             let  alarm = Alarm(
                 time:time ?? self.selectTime.date,
                 daysOfWeek: daysOfWeek ?? [false,false,false,false,false,false,false],
@@ -130,15 +131,14 @@ class SetAlarmViewController: UIViewController {
             print(#function)
             dismiss(animated: true)
         }else{
+            #warning("todo")
             let  alarm = Alarm(
                 time:time ?? self.selectTime.date,
                 daysOfWeek: daysOfWeek ?? [false,false,false,false,false,false,false],
                 label: label ?? "鬧鐘",
                 sound: sound ?? "雷達",
                 status: status ?? true)
-            #warning("todo")
-//            alarmArray[] =
-            alarmArray.append(alarm)
+            alarmArray[cellIndex!] = alarm
             saveAlarm(alarmArray)
             print(#function)
             dismiss(animated: true)
@@ -167,12 +167,14 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
         case 0:
             print("\(info[0])")
             if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "daysOfWeekViewController") as? DaysOfWeekViewController{
-                vc.daysofWeek = self.daysOfWeek ?? [false,false,false,false,false,false,false]
+                vc.daysOfWeek = self.daysOfWeek ?? Array(repeating: false, count: 7)
                 vc.getDaysOfWeek = { getData  in
                     self.daysOfWeek = getData
+                    #warning("fill")
                     self.daysOfWeekLabel = self.GetDaysOfWeekString(array: self.daysOfWeek!)
                     self.menuTableView.reloadData()
                 }
+                #warning("present")
                 show(vc, sender: nil)
             }
         case 1:
@@ -202,7 +204,7 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
         let cell2 = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "Cell")
         let cell3 = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "Cell")
         let cell4 = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "Cell")
-        
+        #warning("fill")
         setCell(cell: cell1, index: 0, text: daysOfWeekLabel ?? "永不")
         setCell(cell: cell2, index: 1, text: label ?? "鬧鐘")
         setCell(cell: cell3, index: 2, text: "雷達")
@@ -257,10 +259,10 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
         cell.textLabel?.text = info[index]
         cell.textLabel?.textColor = .white
         cell.backgroundColor = .backgroundColor2
-        button.isOn = bool
-        button.addTarget(self, action: #selector(SetAlarmViewController.isOpen(sender:)), for: .touchUpInside)
-        view1.addSubview(button)
-        button.snp.makeConstraints { (make) in
+        `switch`.isOn = bool
+        `switch`.addTarget(self, action: #selector(SetAlarmViewController.isOpen(sender:)), for: .touchUpInside)
+        view1.addSubview(`switch`)
+        `switch`.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
         }
@@ -268,8 +270,9 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
         cell.selectionStyle = .none
     }
     @objc func isOpen(sender : UIButton){
-        self.status = button.isOn
+        self.status = `switch`.isOn
     }
+    #warning("fix")
     func GetDaysOfWeekString(array:[Bool]) -> String {
         var array = array
         var trueNum = 0

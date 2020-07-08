@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import SnapKit
 import UserNotificationsUI
+#warning("放進class")
 var alarmArray = [Alarm](){
     didSet{
         UserDefaults.standard.set(try? PropertyListEncoder().encode(alarmArray), forKey:"alarmArray")
@@ -23,11 +24,16 @@ class ViewController: UIViewController{
             alarmTableView.dataSource = alarmTableViewController
         }
     }
+    //不錯的用法
+    var tableView :UITableView = {
+        return UITableView()
+    }()
     var alarmTableViewController = AlarmTableViewViewController()
     var dayType:[Bool] = []
     override func viewDidLoad() {
         view.backgroundColor = .black
         alarmArray = loadAlarm()
+        #warning("delegate比較好")
         alarmTableViewController.showNavigationItem = { make  in
             if make{
                 UIView.animate(withDuration: 0.2) {
@@ -47,7 +53,7 @@ class ViewController: UIViewController{
         setupNavigetionBar()
         setupNavigetionBarItem()
         
-        super.viewDidLoad()
+        super.viewDidLoad()//
     }
     func setupNavigetionBar (){
         self.navigationController?.navigationBar.isTranslucent = true
@@ -56,10 +62,9 @@ class ViewController: UIViewController{
     }
     func setupNavigetionBarItem() {
         //title
-        let title = UILabel()
-        title.text = "鬧豬"
-        title.textColor = .white
-        
+        let titleLabel = UILabel()
+        titleLabel.text = "鬧豬"
+        titleLabel.textColor = .white
         //addButton
         var addImage = UIImage(systemName: "plus")
         addImage = addImage!.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
@@ -67,7 +72,7 @@ class ViewController: UIViewController{
             image: addImage,
             style: .plain,
             target: self,
-            action: #selector(ViewController.add))
+            action: #selector(add))
         
         //editButton
         let editButton = UIBarButtonItem(
@@ -77,11 +82,12 @@ class ViewController: UIViewController{
             action: #selector(ViewController.edit))
         editButton.tintColor = .systemOrange
         
-        navigationItem.titleView = title
+        navigationItem.titleView = titleLabel
         navigationItem.leftBarButtonItem = editButton
         navigationItem.rightBarButtonItem = addButton
     }
     func setTableView() {
+        #warning("修改fullscreen")
         self.alarmTableView = CustomTableView(frame: CGRect(x: 0, y: 0, width: fullScreen.width, height: fullScreen.height), style: .grouped)
         alarmTableView.register(UINib(nibName: "AlarmCell", bundle: nil), forCellReuseIdentifier: "alarmCell")
         alarmTableView.homePageTableView()
@@ -102,7 +108,8 @@ class ViewController: UIViewController{
     @objc func add(){
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "setAlarmViewController") as? SetAlarmViewController
         let nc = SetAlarmNCViewController(rootViewController: vc!)
-        vc?.createMode = true
+        vc?.cellIndex = nil
+        #warning("可以用enum")
         nc.reloadTableViewData = {
             self.alarmTableView.reloadData()
         }
@@ -133,6 +140,7 @@ class ViewController: UIViewController{
         }
     }
 }
+#warning("userdefault給資料庫做")
 extension ViewController{
     func loadAlarm () -> [Alarm]{
         if let data = UserDefaults.standard.value(forKey:"alarmArray") as? Data {
@@ -140,7 +148,7 @@ extension ViewController{
             return alarmArray!
         }
         else{
-            return [Alarm].init()
+            return []
         }
     }
     func saveAlarm (_ alarmArray:[Alarm]){
