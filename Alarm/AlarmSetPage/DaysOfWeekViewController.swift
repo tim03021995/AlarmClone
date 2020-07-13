@@ -67,11 +67,6 @@ extension DaysOfWeekViewController:UITableViewDelegate,UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("\(info[indexPath.row])")
-//        if (daysofWeek![indexPath.row]){
-//            daysofWeek![indexPath.row] = false
-//        }else{
-//            daysofWeek![indexPath.row] = true
-//        }
         #warning("調查 mutating func")
         daysOfWeek![indexPath.row].toggle()
         self.tableView.reloadData()

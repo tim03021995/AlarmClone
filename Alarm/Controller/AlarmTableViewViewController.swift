@@ -74,7 +74,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 30))
         let headerLabel = UILabel(frame: CGRect(x: 15, y: -20,width: headerView.frame.width-10, height: headerView.frame.height-10))
-        headerLabel.text = "鬧豬"
+        headerLabel.text = "鬧鐘"
         headerLabel.font = UIFont.boldSystemFont(ofSize: 35)
         headerLabel.textColor = .white
         headerLabel.textAlignment = .left
@@ -163,7 +163,7 @@ class AlarmTableViewViewController: UIViewController ,UITableViewDelegate,UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "setAlarmViewController") as? SetAlarmViewController
         let nc = SetAlarmNCViewController(rootViewController: vc!)
-        vc?.daysOfWeek = alarmArray[indexPath.row].daysOfWeek
+        vc?.daysOfWeek = alarmArray[indexPath.row].daysOfWeek 
         vc?.daysOfWeekLabel = GetDaysOfWeekString(array: alarmArray[indexPath.row].daysOfWeek)
         vc?.sound = alarmArray[indexPath.row].sound
         vc?.status = alarmArray[indexPath.row].status

@@ -21,7 +21,6 @@ class SetAlarmViewController: UIViewController {
     let fullScreen = UIScreen.main.bounds.size
     var selectTime = UIDatePicker()
     var menuTableView = UITableView()
-    
     let `switch` = UISwitch(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
     let  info = ["重複","標籤","提示聲","稍後提醒"]
     //
@@ -31,6 +30,7 @@ class SetAlarmViewController: UIViewController {
         setupNavigetionBarItem()
         setupSelectTime()
         setupTableView()
+        setUpdeleteButton()
         super.viewDidLoad()
     }
     //    override func viewWillDisappear(_ animated: Bool) {
@@ -44,7 +44,12 @@ class SetAlarmViewController: UIViewController {
     func setupNavigetionBarItem() {
         //title
         let title = UILabel()
-        title.text = "加入鬧鐘"
+        if(cellIndex == nil ){
+            title.text = "加入鬧鐘"
+        }else{
+            title.text = "編輯鬧鐘"
+        }
+        
         title.textColor = .white
         
         //saveButton
@@ -62,7 +67,7 @@ class SetAlarmViewController: UIViewController {
             target: self,
             action: #selector(SetAlarmViewController.cancel))
         cancelButton.tintColor = .systemOrange
-
+        
         //backButton
         let backButton = UIBarButtonItem(
             title: "返回",
@@ -113,9 +118,25 @@ class SetAlarmViewController: UIViewController {
         self.view.addSubview(menuTableView)
         menuTableView.snp.makeConstraints { (make) in
             make.top.equalTo(selectTime.snp_bottom).offset(0)
-            make.height.equalToSuperview().offset(0)
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview().offset(-200)
+        }
+    }
+    func setUpdeleteButton(){
+        let deleteButton = UIButton(type: .custom)
+        if(cellIndex != nil){
+            deleteButton.setTitle("刪除鬧鐘", for: .normal)
+            deleteButton.setTitleColor(.systemRed, for: .normal)
+            deleteButton.backgroundColor = .backgroundColor2
+            deleteButton.addTarget(self, action: #selector(self.del), for: .touchUpInside)
+            self.view.addSubview(deleteButton)
+            deleteButton.snp.makeConstraints { (make) in
+                make.top.equalTo(menuTableView.snp_bottom).offset(15)
+                make.height.equalTo(menuTableView).multipliedBy(0.25)
+                make.left.equalToSuperview().offset(0)
+                make.right.equalToSuperview().offset(0)
+            }
         }
     }
     @objc func save (){
@@ -146,8 +167,9 @@ class SetAlarmViewController: UIViewController {
         
     }
     @objc func cancel (){
-        print("取消")
-        dismiss(animated: true)
+        dismiss(animated: true){
+            print("取消")
+        }
     }
     @objc func dateDidSelect(){
         self.time = selectTime.date
@@ -156,6 +178,10 @@ class SetAlarmViewController: UIViewController {
     @objc func back (){
         print(#function)
         self.menuTableView.reloadData()
+    }
+    @objc func del(){
+        alarmArray.remove(at: self.cellIndex!)
+        dismiss(animated: true)
     }
 }
 extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
@@ -174,8 +200,9 @@ extension SetAlarmViewController:UITableViewDelegate, UITableViewDataSource{
                     self.daysOfWeekLabel = self.GetDaysOfWeekString(array: self.daysOfWeek!)
                     self.menuTableView.reloadData()
                 }
-                #warning("present")
+                #warning("詢問一將，present會將下一個頁面全螢幕顯示")
                 show(vc, sender: nil)
+                //present(vc, animated: true, completion: nil)
             }
         case 1:
             print("\(info[1])")
